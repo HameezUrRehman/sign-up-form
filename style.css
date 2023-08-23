@@ -120,4 +120,7 @@ a {
     .row {
         display: block;
     }   
+  form input[type="checkbox"] {
+  width: 5%;
+}
 }
