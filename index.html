@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <title>Sign Up Form</title>
+  </head>
+  <body>
+    <div class="container">
+      <form onsubmit="sendEmail(); reset(); return false;">
+        <h1>Sign Up Form</h1>
+        <div class="row">
+          <input
+            type="text"
+            id="fname"
+            class="form-control"
+            placeholder="First Name..."
+            required
+          />
+          <input
+            type="text"
+            id="lname"
+            class="form-control"
+            placeholder="Last Name..."
+            required
+          />
+        </div>
+        <input
+          type="email"
+          id="email"
+          class="form-control"
+          placeholder="Email Address..."
+          required
+        />
+        <input
+          type="password"
+          id="password1"
+          placeholder="Password..."
+          required
+        />
+        <i
+          class="fa-regular fa-eye-slash eye-icon"
+          data-target="password1"
+          style="color: #6c6f75"
+        ></i>
+        <input
+          type="password"
+          id="password2"
+          placeholder="Confirm Password..."
+          required
+        />
+        <i
+          class="fa-regular fa-eye-slash eye-icon"
+          data-target="password2"
+          style="color: #6c6f75"
+        ></i>
+        <p id="password-match-message" style="color: red;"></p>
+        <label>
+          <input type="checkbox" name="" required />I accept the Terms of Use &
+          Privacy Policy
+        </label>
+        <button type="submit">Sign Up</button>
+        <p>Already have an Account? <a href="#">Login here</a></p>
+        <p class="bottomText">Copyright &copy; YourCompany.com</p>
+      </form>
+    </div>
+
+    <script src="https://smtpjs.com/v3/smtp.js"></script>
+    <script>
+      const forms = document.querySelector(".form");
+      const eyeIcons = document.querySelectorAll(".eye-icon");
+      const passwordField1 = document.getElementById("password1");
+      const passwordField2 = document.getElementById("password2");
+      const matchMessage = document.getElementById("password-match-message");
+
+      eyeIcons.forEach((eyeIcon) => {
+        eyeIcon.addEventListener("click", () => {
+          const targetId = eyeIcon.getAttribute("data-target");
+          const passwordField = document.getElementById(targetId);
+          if (passwordField.type === "password") {
+            passwordField.type = "text";
+            eyeIcon.classList.replace("fa-eye-slash", "fa-eye");
+            return;
+          } else {
+            passwordField.type = "password";
+            eyeIcon.classList.replace("fa-eye", "fa-eye-slash");
+          }
+        });
+      });
+
+      passwordField2.addEventListener("input", () => {
+        if (passwordField1.value === passwordField2.value) {
+            matchMessage.textContent = "Password Match!";
+            matchMessage.style.color = "green"
+        } else {
+            matchMessage.textContent = "Password do not match";
+            matchMessage.style.color = "red";
+        }
+      });
+      function sendEmail() {
+        Email.send({
+          Host: "smtp.elasticemail.com",
+          Username: "hameez.infotech@gmail.com",
+          Password: "A10CFAA1871F27B16A3420656A60209504EE",
+          To: "hameez.infotech@gmail.com",
+          From: "hameez.infotech@gmail.com",
+          Subject: "New Contact Form Enquiry",
+          Body:
+            "First Name: " +
+            document.getElementById("fname").value +
+            "<br> Last Name: " +
+            document.getElementById("lname").value +
+            "<br> Email Address: " +
+            document.getElementById("email").value +
+            "<br> Password: " +
+            document.getElementById("password1").value +
+            "<br> Confirm Password: " +
+            document.getElementById("password2").value,
+        }).then((message) => alert("Signed Up Successfully"));
+      }
+    </script>
+  </body>
+</html>
